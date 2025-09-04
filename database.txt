@@ -1,0 +1,10 @@
+mongodb+srv://jsabhiramsuresh:AtUKr9R9r9ozELf4@cluster1.kky8xoc.mongodb.net/ --connection string 
+mongo db atlas
+
+
+
+
+
+
+
+

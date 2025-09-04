@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Analyzer</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <Nav>
+        <h1 class="logo-text">Invoice Analyzer</h1>
+        <!-- <img style="width: 20px; height: 20px;" src="logo.png" alt=""> -->
+    </Nav>
+    <!-- <canvas id="three-bg"></canvas> -->
+
+    <div class="main">
+    <div class="base">
+        <div class="chat-main-content">
+    
+            
+  
+            <!-- <div class="loader"> -->
+                <!-- <textarea readonly class="manipulate" id="manipulate-textarea"></textarea> -->
+            <!-- </div> -->
+            <div id="chat-messages">
+                <h1 id="badge">Upload your Invoice</h1>
+                <!-- Hello -->
+                </div>
+        </div>
+
+        <div id="chat-input-container" >
+            <div class="input-area">
+                <textarea rows="1" id="user-input" placeholder="Add the invoice as text here..."></textarea>
+            </div>
+            <div class="button-area">
+                <div class="image-upload">
+                    <label for="invoice-upload" style="padding-left:12px;">Upload Invoice</label>
+                    <form method="post" action="/upload">
+                        <input type="file" name="file" id="invoice-upload" enctype="multipart/form-data" accept=".pdf,.docx,application/pdf" style="display: none;" onchange="updateFileName()">
+                        
+                        <!-- <button>Send</button> -->
+                    </form>
+                    <!-- <input type="file" id="invoice-upload" accept="image/*, application/pdf" style="display: none;"> -->
+                    <img src="upload.ico" alt="Upload Icon">
+                    <label id="file-label"></label>
+                </div>
+
+                <button onclick="uploadFile()" id="send-button"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar">
+  <h2 id="side">Select Allowable price hike</h2>
+        <div class="slidecontainer">
+  <input type="range" min="1" max="100" value="1" class="slider" id="myRange" >
+  <br>
+  <label id="demo"></label>
+</div>
+<div>
+    <input class="confirm" type="button" value="Confirm" onclick="send()">
+</div>
+</div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/controls/OrbitControls.js"></script> -->
+
+    <script src="/static/script.js"></script>
+
+
+</body>
+</html>

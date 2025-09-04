@@ -1,0 +1,366 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Important for flexbox to work properly */
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex; /* Make body a flex container */
+    flex-direction: column; 
+    /* Stack children vertically */
+
+}
+body{
+        background:radial-gradient(#0cdac5, #0b0303);
+}
+/* }
+#three-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+} */
+
+#side{
+    /* background-color: #051e72; */
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    height: 30px;
+    text-align: center;
+    border-radius: 10px;
+    /* width:10px; */
+}
+Nav {
+    background-color: #282c34; /* Darker header */
+    color: rgba(255, 255, 255, 0.9);
+    padding: 15px 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+Nav h1 {
+    margin: 0;
+    text-align: left;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #0f9894, #a30cb4);
+    background-clip: text;
+    -webkit-background-clip: text;
+    /* -webkit-text-fill-color: transparent; */
+
+    font-size: 1.8em;
+}
+.main{
+    display: flex;
+    justify-content: space-between;
+    /* position: relative;
+    z-index: 1;  */
+    /* align-items: center;?? */
+
+    flex-grow: 1;
+    
+    
+}
+.confirm{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: none;
+    color: #bf58ef;
+    border: none;
+    font-size: medium;
+    border-radius: 20px;
+    background-color: #030000;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 42%;
+   
+}
+
+/* .logo-text{ */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* color: white; */
+/* } */
+#badge{
+    display: flex;
+    justify-content: center;
+    font-size: medium;
+    align-items: center;
+    color: white;
+    margin-top: 20%;
+    border-radius: 20px;
+    padding: 10px;
+}
+.sidebar{
+    /* display: none; */
+    display: none;
+    gap: 10px;
+    background:linear-gradient(to right, #0a0b0b, #070008);
+    color: rgb(226, 155, 220);
+    border-radius: 20px;
+    height: fit-content;
+    max-height: 70%;
+    overflow-y: auto;
+    padding-right: 10px;
+ 
+    width: 30%;
+    margin: 20px auto;
+    border:solid 2px rgb(18, 7, 140);
+}
+/* The slider itself */
+.slider {
+  /* -webkit-appearance: none;  Override default CSS styles */
+  height:100%;
+  width: 100%;;
+   /* Full-width */
+  /* height: 25px; */
+  /* background: #d3d3d3; Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+  
+}
+#demo{
+    color: white;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+
+/* Hidden by default */
+/* } */ */
+.sidebar.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.sidebar.active {
+  display: grid; /* Visible when active */
+}
+/* .sidebar.show { */
+    /* transform: translateX(0); */
+/*  */
+/* } */
+.base {
+    display: flex;
+    flex-direction: column;
+    /* --> */
+    /* position: relative;
+    z-index: 1; */
+    flex-grow: 1; /* Make .base take up remaining vertical space */
+    width: 90%; /* Adjust as needed */
+    max-width: 900px; /* Max width for content */
+    margin: 20px auto; /* Center the content */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Contains children */
+    padding-bottom: 10px; /* Space for the fixed input area */
+}
+
+.chat-main-content {
+    background-color: black;
+    flex-grow: 1; /* Allows this area to expand and push input to bottom */
+    overflow-y: auto; /* Enable vertical scrolling for chat messages */
+    padding: 15px;
+    display: flex;
+    flex-direction: column; /* To place loader above chat messages */
+    gap: 15px; /* Space between loader and messages, or between messages */
+}
+/* Styles for chat messages */
+#chat-messages {
+    display: flex;
+    flex-direction: column;
+    height:300px;
+    gap: 10px; /* Space between individual messages */
+}
+
+.user-message, .ai-message {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 70%; /* Limit message width */
+    word-wrap: break-word; /* Break long words */
+    line-height: 1.5;
+}
+
+/* Loader/Manipulation Area */
+.loader {
+    /* Style this as per your requirement */
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Space below loader */
+}
+
+.manipulate {
+    width: 100%;
+    min-height: 80px; /* Initial height */
+    max-height: 300px; /* Max height before it scrolls internally */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none; /* Disable manual resizing */
+    overflow-y: auto; /* Enable scrolling if content exceeds max-height */
+    font-family: 'Courier New', Courier, monospace; /* Monospace for code/logs */
+    background-color: #e9ecef;
+    color: #333;
+}
+
+/* Chat Input Container (sticky at bottom) */
+#chat-input-container {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+.input-area {
+    display: flex;
+    align-items: flex-end; /* Align items to the bottom as textarea grows */
+}
+
+#user-input {
+    flex-grow: 1; /* Allow input to take remaining space */
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 20px;
+    font-size: 1em;
+    resize: none; /* Disable manual resizing */
+    overflow-y: hidden; /* Hide scrollbar initially */
+    min-height: 20px; /* Base height for single line */
+    line-height: 1.4; /* For consistent line spacing */
+    max-height: 150px; /* Maximum height before it scrolls internally */
+}
+
+.button-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.image-upload {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #007bff;
+}
+
+.image-upload img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    padding: 0;
+}
+
+#send-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%; /* Make it a circle */
+    width: 45px; /* Fixed width and height for circle */
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.2s ease;
+}
+
+#send-button:hover {
+    background-color: #0056b3;
+}
+label:hover{
+    cursor: pointer;
+}
+
+/* Chat container styling */
+.chat-container {
+    height: 500px; /* Fixed height */
+    overflow-y: auto; /* Enable vertical scroll */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat messages area */
+#chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px; /* Space for scrollbar */
+}
+
+/* Individual messages */
+.user-message, .ai-message {
+    margin: 8px 0;
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
+}
+
+.user-message {
+    align-self: flex-end;
+    background:linear-gradient(to right, #bdb50c, #012828fa);
+    color: white;
+}
+
+.ai-message {
+    align-self: flex-start;
+    background:linear-gradient(to right, #0f9894, #a30cb4);
+    color: rgb(226, 217, 217);
+}
+
+/* Thinking message styling */
+.ai-message.thinking {
+    color: #a90fe1;
+    font-style: italic;
+}
+
+/* Text input area */
+#user-input {
+    max-height: 150px;
+    resize: none;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+/* Hide sidebar initially */
+/* .sidebar { */
+    /* transform: translateX(100%); */
+    /* opacity: 0; */
+    /* transition: all 0.5s ease-in-out; */
+/* } */
+/*  */
+/* When visible */
+/* .sidebar.show { */
+    /* transform: translateX(0%); */
+    /* opacity: 1; */
+/* } */
+/*  */
+/* Sidebar content items */
+/* #conversation-history li { */
+    /* list-style: none; */
+    /* padding: 10px; */
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.2); */
+/* } */
+/*  */
