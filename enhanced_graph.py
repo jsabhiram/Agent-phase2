@@ -8,6 +8,8 @@ from enhanced_state import get_initial_state
 import json
 from groq import Groq
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from side_bar_hover import get_side,change_side
 from slider_value import get_value
 import time
@@ -16,7 +18,8 @@ groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 class GroqDecisionAgent:
     # llama-3.1-8b-instant
-    def __init__(self, model_name="llama3-8b-8192"):
+    def __init__(self, model_name="llama-3.1-8b-instant"):
+        
         self.model_name = model_name
         self.client = groq_client
     
@@ -150,6 +153,7 @@ def run_graph(state):
         return state
 
     def process_product_node(state):
+        print(state['pending_products'])
         if not state["pending_products"]:
             return state
             
