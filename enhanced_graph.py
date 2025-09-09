@@ -1,5 +1,5 @@
 from langchain.agents import Tool
-from doc_parse import admin
+from phase0.doc_parse_old import admin
 from search import search
 from compare import decide
 from report import generate_report

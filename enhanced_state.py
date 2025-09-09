@@ -8,12 +8,14 @@ class Product(TypedDict):
     country: str
     vendor: str
     hsn: str
+    risk:int
 
 class ProductResult(TypedDict):
     product: str
     invoice_price: float
     market_prices: Dict[str, float]  # e.g., {"min": 65000, "max": 70000}
     anomaly: str
+    risk:int #risk level
     status: str  # "success" or "retry_success"
 
 # -- Define the LangGraph-compatible state schema --
