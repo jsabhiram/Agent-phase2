@@ -13,6 +13,7 @@ load_dotenv()
 from side_bar_hover import get_side,change_side
 from slider_value import get_value
 import time
+from risk_data import organize
 # Initialize Groq client
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
@@ -157,9 +158,14 @@ def run_graph(state):
         if not state["pending_products"]:
             return state
             
-        product = state["pending_products"].pop(0)
-        print(f"🔍 Processing: {product['itemname'][:22:]}")
+        pre_product = state["pending_products"].pop(0)
+        # print("🔎🔎🔎🔎🔎Debugging",product)
         
+        product=organize(pre_product)
+        
+        # product['risk']=3
+        print("🔎🔎🔎🔎🔎Debugging",product)
+        print(f"🔍 Processing: {product['itemname'][:22:]}")
         try:
             prices = search(product["itemname"])
             print("Debug prices:", prices)

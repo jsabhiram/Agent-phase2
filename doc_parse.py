@@ -66,23 +66,6 @@ def form(data):
     return "[No match found]"
 
 
-def some(s):
-    """
-    Extract vendor list and call share.add_vendor
-    """
-    try:
-        data_list = ast.literal_eval(s)
-    except Exception as e:
-        print("Error parsing string to list:", e)
-        return
-
-    vendors = [entry.get('vendor', 'unknown') for entry in data_list if isinstance(entry, dict)]
-    if vendors:
-        from share import add_vendor
-        add_vendor(vendors)
-        print(vendors)   # e.g. ['STS ENTERPRISES']
-
-
 def admin(file_path):
     """
     Orchestrator: extract invoice data, query Agent, parse response.
@@ -96,7 +79,7 @@ def admin(file_path):
         "Analyze the content and then decide product price; include brand and features "
         "also in name. Neglect services like handling or platform fee. "
         "Return in a form which is best for jsonify function to work, "
-        "with keys itemname, quantity, price for each item. "
+        "with keys itemname, quantity,unit(if any like kg,mLor L,ton ,if not found return 'units' as its value) price for each item. "
         "Most importantly check if the item included is a valid product name "
         "and not ambiguous. If there are no products or services found with a price, "
         "then return the message: 'no useful invoice data found'."

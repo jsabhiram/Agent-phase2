@@ -21,6 +21,21 @@ body{
   width: 100vw;
   height: 100vh;
 } */
+.viewing{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #282c34;
+    border: none;
+    color: #ddd;
+}
+.close{
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+}
+
+
 
 #side{
     /* background-color: #051e72; */
@@ -30,7 +45,7 @@ body{
     border-radius: 10px;
     /* width:10px; */
 }
-Nav {
+nav {
     background-color: #282c34; /* Darker header */
     color: rgba(255, 255, 255, 0.9);
     padding: 15px 20px;
@@ -42,7 +57,7 @@ Nav {
     flex-shrink: 0; /* Prevent header from shrinking */
 }
 
-Nav h1 {
+nav h1 {
     margin: 0;
     text-align: left;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -62,7 +77,11 @@ Nav h1 {
 
     flex-grow: 1;
     
-    
+
+}
+#bt{
+    background: none;
+    border:none;
 }
 .confirm{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

@@ -326,7 +326,9 @@ function send() {
     }
 }
 
-        
+function closeWarning() {
+      document.getElementById('warning').style.display = 'none';
+    }   
 
 ///comme
 

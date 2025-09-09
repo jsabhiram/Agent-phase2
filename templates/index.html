@@ -8,10 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <Nav>
+    <nav>
         <h1 class="logo-text">Invoice Analyzer</h1>
         <!-- <img style="width: 20px; height: 20px;" src="logo.png" alt=""> -->
-    </Nav>
+         <div id='warning'class="viewing" cols="50" rows="2">
+            <div>
+                <img src="message.png" alt="" width="30px" height="25px" style="padding-right: 5px;">
+            </div>
+            <div id="warn">
+                <span class="board">Invoice Analyzer</span>
+            </div>
+            <div class="warning-actions">
+        <button id='bt' class="btn-close" onclick="closeWarning()" title="Ignore the message">❌</button>
+        <button id ='bt' class="btn-view" onclick="viewDetails()" title="Check details">🔎</button>
+      </div>
+         </div>
+    </nav>
     <!-- <canvas id="three-bg"></canvas> -->
 
     <div class="main">

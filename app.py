@@ -95,6 +95,9 @@ def serve_upload_icon():
 @app.route('/logo.png')
 def serve_upload_m_icon():
     return send_from_directory('templates', 'logo.png')
+@app.route('/message.png')
+def serve_nessage_icon():
+    return send_from_directory('templates', 'message.png')
 @app.route('/status', methods=['GET'])
 def stat():
     print(get_slider_value())

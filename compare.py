@@ -50,7 +50,7 @@ Your final output should include:
     return completion.choices[0].message.content
 def mark(dct):
     # source(dct)
-    passs
+    pass
 
 
 

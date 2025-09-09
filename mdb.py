@@ -30,23 +30,10 @@ def extract_all_details():
         "vendors": vendors,
         "countries": countries,
         "hsn_codes": hsn_codes,
-        "benchmark_prices": benchmark_prices,
+        # "benchmark_prices": benchmark_prices,
         "quantity_limits": quantity_limits
     }
 
-# Example 
-def confuse():
-    return extract_all_details()
-# details = extract_all_details()
-# vend=details["vendors"]
-# coun=details["countries"]
-# hsn=details["hsn_codes"]
-# bench=details["benchmark_prices"]
-# quant=details["quantity_limits"]
-# 
-# print(vend)
-# print(coun)
-# print(hsn)
-# print(bench)
-# print(quant)
-# 
+# Example
+c=extract_all_details()['quantity_limits']
+print(c['High-Precision Gear']['unit'])

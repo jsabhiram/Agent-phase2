@@ -3,12 +3,14 @@ from typing import TypedDict, List, Optional, Dict, Any
 # -- Define product structure --
 class Product(TypedDict):
     itemname: str         
-    quantity: int     
+    quantity: int
+    unit:str     
     price: float
     country: str
     vendor: str
     hsn: str
     risk:int
+    risk_details:str
 
 class ProductResult(TypedDict):
     product: str
