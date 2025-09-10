@@ -16,11 +16,11 @@
                 <img src="message.png" alt="" width="30px" height="25px" style="padding-right: 5px;">
             </div>
             <div id="warn">
-                <span class="board">Invoice Analyzer</span>
+                <span id="board">Invoice Analyzer</span>
             </div>
             <div class="warning-actions">
         <button id='bt' class="btn-close" onclick="closeWarning()" title="Ignore the message">❌</button>
-        <button id ='bt' class="btn-view" onclick="viewDetails()" title="Check details">🔎</button>
+        <button id ='bt' class="btn-view" onclick="viewMore()" title="Check details">🔎</button>
       </div>
          </div>
     </nav>
@@ -38,6 +38,16 @@
             <div id="chat-messages">
                 <h1 id="badge">Upload your Invoice</h1>
                 <!-- Hello -->
+                </div>
+             <div id="overlay">
+                        <h2>Warning Details🎀</h2>
+                        <textarea id="over-chat" rows="20" cols="85"></textarea>
+                        <div style="display: flex;padding:15px;justify-content: space-between;">
+                                <button class="overlay-btn" data-choice="reject" id="b">Reject Product ❌</button>
+                                <button class="overlay-btn" data-choice="accept" id="b">Accept ✅</button>
+                        </div>
+                        
+                        <!-- <p>You can show/hide this with CSS or JS</p> -->
                 </div>
         </div>
 

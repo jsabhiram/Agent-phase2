@@ -11,12 +11,14 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from side_bar_hover import get_side,change_side
-from slider_value import get_value
+from slider_value import get_value,send_value,semaphore
 import time
 from risk_data import organize
+
 # Initialize Groq client
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-
+def check_product(state, product):
+    
 class GroqDecisionAgent:
     # llama-3.1-8b-instant
     def __init__(self, model_name="llama-3.1-8b-instant"):
@@ -162,7 +164,16 @@ def run_graph(state):
         # print("🔎🔎🔎🔎🔎Debugging",product)
         
         product=organize(pre_product)
-        
+        if product['risk']>=2:
+            
+            send_value(True,"Warning triggered for "+product['itemname'][:10:])
+            
+            while semaphore():
+                print(' Waiting for user response🤖')
+                print(semaphore())
+                time.sleep(2)
+                pass
+            
         # product['risk']=3
         print("🔎🔎🔎🔎🔎Debugging",product)
         print(f"🔍 Processing: {product['itemname'][:22:]}")

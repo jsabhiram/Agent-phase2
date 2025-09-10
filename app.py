@@ -13,7 +13,7 @@ import phase0.doc_parse_old as d
 from typing import cast
 from side_bar_hover import get_side
 from werkzeug.utils import secure_filename
-from slider_value import change_value,get_value
+from slider_value import change_value,get_value,get_warning,send_value,get_overlay,hide_overlay,set_overlay,change_sema
 app = Flask(__name__)
 app.config['SHARED_DATA'] ={'show_sidebar':get_side(),'slider_value': None }
 # agent = Agent()  # Initialize your AI agent
@@ -22,6 +22,7 @@ SLIDER_VALUE = get_value()
 global zone
 zone="Upload your Invoice"
 def change_zone(msg):
+    
     global zone
     zone=msg
 UPLOAD_FOLDER = 'uploads'
@@ -104,8 +105,31 @@ def stat():
     # status_flag = app.config['SHARED_DATA'].get('show_sidebar', False)
     print("Here the value of flag ",get_side())
     status_flag = get_side()
-    return jsonify({'show_sidebar': status_flag})
+    res=get_warning()
+    x,y=res[0],res[1]
+    return jsonify({'show_sidebar': status_flag,'show_warning':x,'warning':y}), 200
+@app.route('/close', methods=['POST'])
+def patience():
+    # send_value(True,"Warning triggered")
+    # time.sleep(5)
+    packet=request.get_json()
+    close_in=packet.get('close_warning')
+    view_in  = packet.get('view_more')       # match JS key
 
+    if close_in and not view_in:
+        send_value(False,"")   # <-- your function
+        print("........................................Closed............................")
+        
+        return jsonify({'status': 'closed'}), 200
+    if view_in and not close_in:
+        # Show overlay with custom message
+            send_value(False,"")
+            change_sema()
+            set_overlay("⚠️ Detailed warning: Please review carefully before proceeding.", True)
+            print("........................................View More Triggered............................")
+            return jsonify({'status': 'viewed', 'overlay': True}), 200
+
+    return jsonify({'status': 'ignored'}), 200
 
 @app.route('/api/query', methods=['POST'])
 def handle_query():
@@ -119,6 +143,58 @@ def handle_query():
         'response': response,
         'status': 'success'
     })
+#adding endpoints for overlay handling
+@app.route("/check_notify")
+def check_notify():
+    """
+    Return current overlay status and data to frontend.
+    """
+    show, data = get_overlay()
+    return jsonify({
+        "status": show,       # True if overlay should show
+        "message": data or ""  # message to display
+    })
+
+
+@app.route("/notify_response", methods=["POST"])
+def notify_response():
+    """
+    Receive user's interaction and hide overlay.
+    """
+    data = request.get_json()
+    decision = data.get("decision")
+    print("User chose:", decision)  # save to DB or log as needed
+
+    # Hide overlay after user responds
+    hide_overlay()
+    send_value(False,"")
+
+    # send_value(False,"")
+
+    return jsonify({
+        "ack": True,
+        "user_choice": decision
+    })
+
+# @app.route("/check_notify")
+# def check_notify():
+    # Example: this could depend on DB checks, business rules, etc.
+    # return jsonify({
+        # "status": True,  # Frontend will show overlay only if this is True
+        # "message": "This product might be defective. Do you want to accept it?"
+    # })
+# 
+# @app.route("/notify_response", methods=["POST"])
+# def notify_response():
+    # data = request.get_json()
+    # decision = data.get("decision")
+    # print("User chose:", decision)  # Here you can log or save to DB
+    # return jsonify({
+        # "ack": True,
+        # "user_choice": decision
+    # })
+
+
 
 @app.route('/feedback',methods=['GET'])
 def feed():
@@ -174,3 +250,7 @@ def get_slider_value():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+    
+    
+                
+    

@@ -134,15 +134,34 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 //end of dom loading
 
-setInterval(() => {
+setInterval(() => {       //faster pipeline for data transfer -fixed latency 2s
   console.log("Checking status...Hitting /status");
   fetch('/status')
     .then(res => res.json())
     .then(data => {
       const sidebar = document.getElementsByClassName('sidebar')[0];
+      checkNotify();
+    //   const war=document.getElementsById('board');
       if (sidebar) {
         sidebar.style.display = data.show_sidebar ? 'block' : 'none';
       }
+      else{
+        console.log("Sidebar not requested");
+      }
+      if(data.show_warning){
+        const main=document.getElementsByClassName('viewing')[0];
+        if(main){
+          main.style.display = 'flex';
+          war=document.getElementById('board');
+          war.innerHTML = data.warning;
+          
+        }
+      }
+      else{
+        const main=document.getElementsByClassName('viewing')[0];
+        main.style.display = 'none';
+      }
+
     })
     .catch(err => console.error("Status check failed:", err));
 }, 2000); // check every 2 seconds
@@ -327,8 +346,75 @@ function send() {
 }
 
 function closeWarning() {
-      document.getElementById('warning').style.display = 'none';
-    }   
+  document.getElementById('warning').style.display = 'none';
+  fetch('/close', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      'close_warning': true,
+      'view_more': false
+    })
+  }).then(response => response.json())
+    .then(data => console.log("Server says:", data));
+}
+
+
+function viewMore() {
+  fetch('/close', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      'close_warning': false,
+      'view_more': true
+    })
+  }).then(response => response.json())
+    .then(data => console.log("Server says:", data));
+}
+
+// ------------------finalizing-------------------------------------------------------
+async function checkNotify() {
+  try {
+    // Call Flask endpoint
+    let response = await fetch("/check_notify");
+    let data = await response.json();
+
+    if (data.status === true) {
+      // Show overlay
+      let overlay = document.getElementById("overlay");
+      overlay.style.display = "grid";
+
+      // Fill textarea with server-provided message
+      document.getElementById("over-chat").value = data.message;
+    //   window.alert(data.message);
+    }
+  } catch (error) {
+    console.error("Error fetching notify:", error);
+  }
+}
+
+// Attach button handlers
+document.querySelectorAll(".overlay-btn").forEach(btn => {
+  btn.addEventListener("click", async (e) => {
+    let choice = e.target.getAttribute("data-choice");
+
+    // Send user interaction back to Flask
+    await fetch("/notify_response", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ decision: choice })
+    });
+
+    // Hide overlay after interaction
+    document.getElementById("overlay").style.display = "none";
+  });
+});
+
+
+
 
 ///comme
 

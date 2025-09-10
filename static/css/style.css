@@ -22,7 +22,7 @@ body{
   height: 100vh;
 } */
 .viewing{
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     background-color: #282c34;
@@ -189,6 +189,7 @@ nav h1 {
 }
 
 .chat-main-content {
+    position: relative;
     background-color: black;
     flex-grow: 1; /* Allows this area to expand and push input to bottom */
     overflow-y: auto; /* Enable vertical scrolling for chat messages */
@@ -199,12 +200,44 @@ nav h1 {
 }
 /* Styles for chat messages */
 #chat-messages {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     height:300px;
     gap: 10px; /* Space between individual messages */
 }
-
+#overlay {
+/* background-color: #0a0b0b; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background: rgba(0, 0, 0, 0.85); /* semi-transparent mask */
+  color: rgb(252, 245, 245);
+  display: none; /* start hidden */
+  
+  z-index: 99; /* higher than chat-messages */
+  
+  /* display: grid; */
+  align-items: center;
+  justify-content: center;
+}
+#over-chat{
+    resize:none;border:none;
+    background:black;color: white;
+    
+}
+#b{
+    /* for overlay button controls */
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+}
 .user-message, .ai-message {
     padding: 10px 15px;
     border-radius: 18px;
