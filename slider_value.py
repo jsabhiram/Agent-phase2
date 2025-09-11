@@ -31,10 +31,12 @@ def get_warning():   #warning
 # def get_status():            #warning
     # global status
     # return status
-def send_value(x,y):
+def send_value(x,y,z=None):
     
     global warning
     global show_warning
+    if z!= None:
+        man_overlay_data(z)
     change_sema()
     warning=y
     show_warning=x
@@ -73,7 +75,9 @@ def get_overlay():
     """
     global overlay_data, show_overlay
     return show_overlay, overlay_data
-
+def man_overlay_data(data):
+    global overlay_data
+    overlay_data = data
 def hide_overlay():
     """
     Hide the overlay without changing the data.

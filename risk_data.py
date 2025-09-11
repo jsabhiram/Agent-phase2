@@ -17,20 +17,20 @@ class Inventory:
     def vendor_fn(self,vendors):
         if self.vendor in vendors:
             self.risk+=1
-            self.risk_details+=f'Exact match in vendor watchlist-{self.vendor} '
+            self.risk_details+=f'Exact match in vendor watchlist-{self.vendor} \n'
         else:
             pass
 
     def country_fn(self,countries):
         if self.country in countries:
             self.risk+=1
-            self.risk_details+=f"Country is flagged {self.country} "
+            self.risk_details+=f"Country is flagged {self.country}\n "
         else:
             pass
     def hsn_fn(self,hsn):
         if self.hsn in hsn:
             self.risk+=1
-            self.risk_details+="HSN code flagged "
+            self.risk_details+=f"HSN code flagged :{self.hsn}\n"
         else:
             pass
 
@@ -45,7 +45,7 @@ class Inventory:
                 b=(pair[name]['max_quantity'])
                 if (self.quantity)>b:
                     self.risk+=1
-                    self.risk_details+=f"Quantity limit exceeded by {self.quantity-b} {self.unit}"
+                    self.risk_details+=f"Quantity limit exceeded by {self.quantity-b} {self.unit}\n"
 
 
 

@@ -18,7 +18,7 @@ from risk_data import organize
 # Initialize Groq client
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 def check_product(state, product):
-    
+    pass
 class GroqDecisionAgent:
     # llama-3.1-8b-instant
     def __init__(self, model_name="llama-3.1-8b-instant"):
@@ -166,7 +166,7 @@ def run_graph(state):
         product=organize(pre_product)
         if product['risk']>=2:
             
-            send_value(True,"Warning triggered for "+product['itemname'][:10:])
+            send_value(True,"Warning triggered for "+product['itemname'][:10:],product['risk_details'])
             
             while semaphore():
                 print(' Waiting for user response🤖')

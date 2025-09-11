@@ -18,32 +18,29 @@ def decide(invoice_entry, benchmark_entry):
     print(invoice_entry ,"AND"  ,benchmark_entry)
 
     print(type(invoice_entry) ,"AND"  ,type(benchmark_entry))
+
     prompt = f"""
-You are a smart pricing evaluator AI that compares two product listings based on their features and prices.
+Compare two product listings for type, specs, and price fairness.
 
-**Listing 1: Invoice Entry**
-{invoice_entry}
+Invoice Entry: {invoice_entry}  
+Benchmark Entry: {benchmark_entry}  
 
-**Listing 2: Benchmark Entry**
-{benchmark_entry}
+Rules:
+- Allowed deviation: {get_value()}%
+- Check if items are the same or different.
+- Decide if invoice price is FAIR, OVERPRICED, UNDERPRICED, or MISMATCHED.
+- Keep response concise.
 
-Task:
-- Analyze the product type, key specifications, and features.
-- Compare both listings even if the wording is different.
-- Focus on price fairness—determine if the invoice price is reasonable based on the benchmark and allowed deviaition or overpricing is {get_value()}%.
-- Consider upgrades/downgrades in specs if any.
-- If the products are significantly different, mention that too.
-
-Your final output should include:
-1. Are the products similar or not?
-2. Is the invoice item overpriced, underpriced, or fairly priced?
-3. A short, clear justification.
-4. Final verdict label: one of ["FAIR", "OVERPRICED", "UNDERPRICED", "MISMATCHED"]
+Output format:
+1. Similarity: [Yes/No]  
+2. Price: [Fair/Overpriced/Underpriced]  
+3. Reason: short one-liner  
+4. Verdict: [FAIR | OVERPRICED | UNDERPRICED | MISMATCHED]
 """
 
     client = Groq()
     completion = client.chat.completions.create(
-        model="llama-3.1-8b-instant",
+        model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content": prompt}]
     )
     print(completion.choices[0].message.content)
@@ -59,5 +56,6 @@ def mark(dct):
 # Example use
 if __name__ == "__main__":
     invoice = "Samsung 7kg Fully Automatic Washing Machine, Inverter Motor, price 18490"
-    benchmark = "Samsung 7kg Inverter Fully Automatic Washing Machine with Smart Features, price 15990"
+    benchmark = "Samsung 7kg Inverter Fully Automatic Washing Machine, price 15990"
     print(decide(invoice, benchmark))
+    print(get_value())

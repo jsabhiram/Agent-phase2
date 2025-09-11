@@ -125,7 +125,7 @@ def patience():
         # Show overlay with custom message
             send_value(False,"")
             change_sema()
-            set_overlay("⚠️ Detailed warning: Please review carefully before proceeding.", True)
+            set_overlay(get_overlay()[1], True)
             print("........................................View More Triggered............................")
             return jsonify({'status': 'viewed', 'overlay': True}), 200
 
