@@ -61,7 +61,7 @@ from langchain.agents import Tool
 from phase0.doc_parse_old import admin
 from search import search
 from compare import decide
-from old_report import generate_report
+from report import generate_report
 from langgraph.graph import StateGraph
 from enhanced_state import get_initial_state
 import json
