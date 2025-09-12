@@ -1,3 +1,40 @@
+/*
+# static/script.js
+
+This JavaScript file contains the main logic for the application. It handles various functionalities, such as sending user input, displaying messages, managing the slider value, and handling notifications.
+
+## Dependencies
+
+- `fetch`: A built-in JavaScript function for making HTTP requests.
+- `document`: The Document Object Model (DOM) for interacting with the HTML document.
+- `setTimeout`: A built-in JavaScript function for scheduling a function to run after a specified time.
+- `JSON`: A built-in JavaScript object for working with JSON data.
+
+## Functions
+
+- `uploaded()`: A function that clears the file label text.
+- `displayReport(sata)`: A function that displays the report in the chat messages container.
+- `send()`: A function that handles the click event of the send button. It sends the slider value to the Flask backend and updates the UI accordingly.
+- `closeWarning()`: A function that handles the click event of the close warning button. It sends the close warning and view more flags to the Flask backend.
+- `viewMore()`: A function that handles the click event of the view more button. It sends the close warning and view more flags to the Flask backend.
+- `checkNotify()`: An asynchronous function that periodically checks for notifications from the Flask backend. It shows the overlay and fills the textarea with the server-provided message.
+- `handleOverlayBtnClick(e)`: A function that handles the click event of the overlay buttons. It sends the user interaction back to the Flask backend and hides the overlay.
+
+## Event Listeners
+
+- `DOMContentLoaded`: An event listener that waits for the DOM to be fully loaded before executing the specified code.
+- `click` event listeners for various elements, such as the send button, close warning button, and overlay buttons.
+
+## Usage
+
+To use this JavaScript file, you can include it in your HTML file using a `<script>` tag. Here's an example:
+
+```html
+<script src="/static/script.js"></script>
+
+*/
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('send-button');

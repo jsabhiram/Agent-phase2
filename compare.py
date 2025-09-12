@@ -1,3 +1,43 @@
+'''
+
+# compare.py
+
+This module contains the `decide` function for comparing two product listings and determining the price fairness.
+
+## Imports
+
+- `from dotenv import load_dotenv`: Imports the `load_dotenv` function from the `dotenv` module.
+- `from groq import Groq`: Imports the `Groq` class from the `groq` module.
+- `from slider_value import get_value`: Imports the `get_value` function from the `slider_value` module.
+
+## decide function
+
+The `decide` function is a general-purpose price comparison function that compares an invoice item with a benchmark listing. It takes two arguments: `invoice_entry` (the description and price from the invoice) and `benchmark_entry` (the description and price from the benchmark). It returns a reasoned verdict on price fairness.
+
+The function follows these steps:
+
+1. Prints the invoice entry and benchmark entry.
+2. Prints the types of the invoice entry and benchmark entry.
+3. Constructs a prompt using the invoice entry and benchmark entry.
+4. Creates a `Groq` client.
+5. Sends a completion request to the `Groq` client with the constructed prompt.
+6. Retrieves the completion response.
+7. Extracts the similarity, price, reason, and verdict from the completion response.
+8. Returns the similarity, price, reason, and verdict as a tuple.
+
+## Example usage
+
+To use this module, you can import the `decide` function from `compare.py`. Here's an example:
+
+```python
+from compare import decide
+
+invoice_entry = "Samsung 7kg Fully Automatic Washing Machine, Inverter Motor, price 18490"
+benchmark_entry = "Samsung 7kg Inverter Fully Automatic Washing Machine, price 15990"
+
+result = decide(invoice_entry, benchmark_entry)
+print(result)
+'''
 from dotenv import load_dotenv
 load_dotenv()
 # from flagged import source

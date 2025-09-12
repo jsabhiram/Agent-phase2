@@ -1,8 +1,67 @@
+'''
+# enhanced_graph.py
+
+This module contains the enhanced graph implementation for the application.
+
+## Imports
+
+- `from langchain.agents import Tool`: Imports the `Tool` class from the `langchain.agents` module.
+- `from phase0.doc_parse_old import admin`: Imports the `admin` function from the `phase0.doc_parse_old` module.
+- `from search import search`: Imports the `search` function from the `search` module.
+- `from compare import decide`: Imports the `decide` function from the `compare` module.
+- `from old_report import generate_report`: Imports the `generate_report` function from the `old_report` module.
+- `from langgraph.graph import StateGraph`: Imports the `StateGraph` class from the `langgraph.graph` module.
+- `from enhanced_state import get_initial_state`: Imports the [get_initial_state](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/enhanced_state.py:38:0-52:5) function from the `enhanced_state` module.
+- `import json`: Imports the `json` module.
+- `from groq import Groq`: Imports the `Groq` class from the `groq` module.
+- `import os`: Imports the `os` module.
+- `from dotenv import load_dotenv`: Imports the `load_dotenv` function from the `dotenv` module.
+- `from side_bar_hover import get_side,change_side`: Imports the `get_side` and `change_side` functions from the `side_bar_hover` module.
+- `from slider_value import get_value,send_value,semaphore`: Imports the `get_value`, `send_value`, and `semaphore` functions from the `slider_value` module.
+- `import time`: Imports the `time` module.
+- `from risk_data import organize`: Imports the `organize` function from the `risk_data` module.
+
+## Global Variables
+
+- [rebundant](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/enhanced_graph.py:17:0-22:19): A global variable used to track the state of the [rebundant](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/enhanced_graph.py:17:0-22:19) flag.
+
+## Functions
+
+- [change_rebundant()](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/enhanced_graph.py:17:0-22:19): A function that toggles the value of the [rebundant](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/enhanced_graph.py:17:0-22:19) flag.
+- [check_product(state, product)](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/enhanced_graph.py:25:0-26:8): A function that checks a product in the given state.
+- [get_tools()](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/enhanced_graph.py:135:0-136:16): A function that returns a list of tools.
+
+## Classes
+
+- `GroqDecisionAgent`: A class that represents the Groq decision agent.
+
+## Initialization
+
+- `groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))`: Initializes the `groq_client` variable with the Groq client using the API key from the environment variables.
+
+## Dependencies
+
+- `langchain.agents`: A module that provides the `Tool` class.
+- `phase0.doc_parse_old`: A module that provides the `admin` function.
+- `search`: A module that provides the `search` function.
+- `compare`: A module that provides the `decide` function.
+- `old_report`: A module that provides the `generate_report` function.
+- `langgraph.graph`: A module that provides the `StateGraph` class.
+- `enhanced_state`: A module that provides the [get_initial_state](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/enhanced_state.py:38:0-52:5) function.
+- `json`: A built-in Python module for working with JSON data.
+- `groq`: A module that provides the `Groq` class.
+- `os`: A built-in Python module for working with the operating system.
+- `dotenv`: A module that provides the `load_dotenv` function for loading environment variables from a `.env` file.
+- `side_bar_hover`: A module that provides the `get_side` and `change_side` functions.
+- `slider_value`: A module that provides the `get_value`, `send_value`, and `semaphore` functions.
+- `risk_data`: A module that provides the `organize` function.
+'''
+
 from langchain.agents import Tool
 from phase0.doc_parse_old import admin
 from search import search
 from compare import decide
-from report import generate_report
+from old_report import generate_report
 from langgraph.graph import StateGraph
 from enhanced_state import get_initial_state
 import json
@@ -14,7 +73,13 @@ from side_bar_hover import get_side,change_side
 from slider_value import get_value,send_value,semaphore
 import time
 from risk_data import organize
-
+rebundant=0
+def change_rebundant():
+    global rebundant
+    if (rebundant==0):
+        rebundant=1
+    else:
+        rebundant=0
 # Initialize Groq client
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 def check_product(state, product):
@@ -156,6 +221,7 @@ def run_graph(state):
         return state
 
     def process_product_node(state):
+        global rebundant
         print(state['pending_products'])
         if not state["pending_products"]:
             return state
@@ -164,37 +230,101 @@ def run_graph(state):
         # print("🔎🔎🔎🔎🔎Debugging",product)
         
         product=organize(pre_product)
-        if product['risk']>=2:
+        print(product['risk'])
+        if product['risk']<2:
+            print("🔎🔎🔎🔎🔎Debugging",product)
+            print(f"🔍 Processing: {product['itemname'][:22:]}")
+            #do nothing but just log
+            try:
+                prices = search(product["itemname"])
+                print("Debug prices:", prices)
+                anomaly = decide(product, prices)
+                state["results"].append({
+                "product": product["itemname"],
+                "invoice_price": product["price"],
+                "market_prices": prices,
+                "anomaly": anomaly,
+                "risk": product["risk"],
+                "status": "success_low_risk_warning",
+                "warning_details": f"Low risk warning ignored: {product['risk_details']}"
+            })
+                print(f"✅ Successfully processed with low risk warning: {product['itemname']}")
+            except Exception as e:
+                print(f"❌ Failed to process {product['itemname']}: {e}")
+                state["failed_once"].append(product)
+            return state
+        
+        elif product['risk']>=2 and product['risk']<4:
             
-            send_value(True,"Warning triggered for "+product['itemname'][:10:],product['risk_details'])
+            send_value(True,"Medium Warning triggered for "+product['itemname'][:10:],product['risk_details'])
             
             while semaphore():
                 print(' Waiting for user response🤖')
                 print(semaphore())
                 time.sleep(2)
                 pass
-            
-        # product['risk']=3
-        print("🔎🔎🔎🔎🔎Debugging",product)
-        print(f"🔍 Processing: {product['itemname'][:22:]}")
-        try:
-            prices = search(product["itemname"])
-            print("Debug prices:", prices)
-            anomaly = decide(product, prices)
-            state["results"].append({
+            if rebundant==1:
+                print("Product rejected")
+                rebundant=0
+                state["results"].append({
+                "product": product["itemname"],
+                "invoice_price": product["price"],
+                "market_prices": {},  # No market prices since not processed
+                "anomaly": "PRODUCT_REMOVED_BY_USER",
+                "risk": product["risk"],
+                "status": "removed_high_risk"
+})
+                return state
+            print("🔎🔎🔎🔎🔎Debugging",product)
+            print(f"🔍 Processing: {product['itemname'][:22:]}")
+            try:
+                prices = search(product["itemname"])
+                print("Debug prices:", prices)
+                anomaly = decide(product, prices)
+                state["results"].append({
                 "product": product["itemname"],
                 "invoice_price": product["price"],
                 "market_prices": prices,
                 "anomaly": anomaly,
                 "status": "success"
             })
-            print(f"✅ Successfully processed: {product['itemname']}")
-        except Exception as e:
-            print(f"❌ Failed to process {product['itemname']}: {e}")
-            state["failed_once"].append(product)
+                print(f"✅ Successfully processed: {product['itemname']}")
+            except Exception as e:
+                print(f"❌ Failed to process {product['itemname']}: {e}")
+                state["failed_once"].append(product)
         
-        return state
+            return state
 
+
+            
+        else:
+            removal_log = {
+            "product_name": product["itemname"],
+            "invoice_price": product["price"],
+            "risk_level": product["risk"],
+            "removal_reason": "High risk product automatically removed",
+            "risk_details": product["risk_details"],
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "action_taken": "Product removed from processing queue"
+        }
+            state["error_log"].append(f"HIGH RISK REMOVAL: {product['itemname']} - Risk Level {product['risk']} - {product['risk_details']}")
+
+            state["results"].append({
+            "product": product["itemname"],
+            "invoice_price": product["price"],
+            "market_prices": {},  # No market prices since not processed
+            "anomaly": "PRODUCT_REMOVED_HIGH_RISK",
+            "risk": product["risk"],
+            "status": "removed_high_risk",
+            "removal_details": removal_log
+        })
+            print(f"🗑️  Product {product['itemname']} removed due to high risk (Level {product['risk']})")
+            print(f"   Reason: {product['risk_details']}")
+            return state
+        
+
+
+        # product['risk']=3    
     def retry_failed_node(state):
         print(f"🔄 Preparing to retry {len(state['failed_once'])} failed products...")
         state["pending_products"] = state["failed_once"].copy()
@@ -330,7 +460,7 @@ def monitor_workflow_progress(state):
 
 
 if __name__ == "__main__":
-    # Make sure to set your Groq API key
+   
     if not os.getenv("GROQ_API_KEY"):
         print("⚠️  Warning: GROQ_API_KEY not found in environment variables")
         print("   Please set your Groq API key: export GROQ_API_KEY='your_api_key_here'")

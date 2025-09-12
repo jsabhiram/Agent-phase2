@@ -1,10 +1,53 @@
+'''
+# app.py
+
+This file is the main entry point for the application. It contains the Flask routes and functions for handling different endpoints.
+
+## Routes
+
+- `/`: Renders the home page using the `index.html` template.
+- `/upload.ico`: Serves the `upload.ico` file from the `templates` directory.
+- `/logo.png`: Serves the `logo.png` file from the `templates` directory.
+- `/message.png`: Serves the `message.png` file from the `templates` directory.
+- `/status`: Returns the current status of the application, including the `show_sidebar`, `show_warning`, and `warning` values.
+- `/close`: Handles the close action, based on the `close_warning` and `view_more` values from the request payload.
+- `/api/query`: Processes the query from the request payload and returns the response from the AI agent.
+
+## Functions
+
+- [stat()](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/app.py:101:0-109:83): Returns the current status of the application.
+- [patience()](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/app.py:110:0-131:46): Handles the close action based on the request payload.
+- [handle_query()](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/app.py:133:0-144:6): Processes the query from the request payload and returns the response from the AI agent.
+
+## Global Variables
+
+- `app`: The Flask application instance.
+- `SLIDER_VALUE`: The current value of the slider.
+- `zone`: The current zone of the application.
+
+## Dependencies
+
+- `flask`: Flask web framework.
+- `werkzeug`: Utilities for Flask.
+- [docx](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/phase0/doc_parse_old.py:14:0-26:7): Library for working with DOCX files.
+- `fitz`: Library for working with PDF files.
+- [re](cci:1://file:///c:/Users/jsabh/OneDrive/Desktop/Agent-phase2/app.py:84:0-86:62): Regular expression module.
+- `pymongo`: Library for working with MongoDB.
+- `dotenv`: Library for loading environment variables from a `.env` file.
+- `json`: Built-in Python module for working with JSON data.
+
+'''
+
+
+
+
 from flask import Flask, render_template, request, jsonify
 from flask import send_from_directory
 # from ai_agent.agent import YourAIAgent  # Import your AI agent
 from test_llm import Agent
 # from state import get_initial_state
 # from graph import run_graph
-from enhanced_graph import run_graph
+from enhanced_graph import run_graph,change_rebundant
 from enhanced_state import get_initial_state
 import os,time
 # from state import get_initial_state
@@ -21,8 +64,20 @@ app.config['SHARED_DATA'] ={'show_sidebar':get_side(),'slider_value': None }
 SLIDER_VALUE = get_value()
 global zone
 zone="Upload your Invoice"
+
+
+
 def change_zone(msg):
     
+    """
+    Changes the value of the zone variable to the given message.
+
+    Args:
+        msg (str): The new value of the zone variable.
+
+    Returns:
+        None
+    """
     global zone
     zone=msg
 UPLOAD_FOLDER = 'uploads'
@@ -38,6 +93,18 @@ import clean_json as cjson
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    """
+    Handles the POST request for uploading a file.
+
+    This function is responsible for:
+    1. Checking if the file part is present in the request.
+    2. Checking if the file is present and has a filename.
+    3. Saving the file to the uploads folder.
+    4. Running the graph with the uploaded file.
+    5. Returning the final report as a JSON response.
+
+    If any errors occur during the process, it returns a JSON response with an error message and a 400 or 500 status code accordingly.
+    """
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 
@@ -62,6 +129,7 @@ def upload_file():
         response=result
         time.sleep(2)
         change_zone("")
+        #rebundant code - initial version
         # change_zone("")
         #changing 10/07/2025 13:31
         # data_to_send=d.extract_invoice_data(file_path) #calls the doc_parse.py
@@ -84,6 +152,7 @@ def upload_file():
     
 @app.route('/response', methods=['POST', 'GET'])
 def get_response():
+    
     return cjson.clean(app.config['SHARED_DATA']['data']), 201
 
 
@@ -164,7 +233,10 @@ def notify_response():
     data = request.get_json()
     decision = data.get("decision")
     print("User chose:", decision)  # save to DB or log as needed
-
+    if decision == "accept":
+        pass
+    elif decision == "reject":
+        change_rebundant()
     # Hide overlay after user responds
     hide_overlay()
     send_value(False,"")
